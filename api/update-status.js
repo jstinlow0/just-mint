@@ -1,7 +1,7 @@
 // api/update-status.js
 // Fire-and-forget status updates on Card Orders pages when owner advances an order
 
-const { Client } = require("@notionhq/client");
+import { Client } from "@notionhq/client";
 
 const STATUS_MAP = {
   pending:     "Pending",
@@ -15,7 +15,7 @@ function extractPageId(url) {
   return m ? m[1] : null;
 }
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");

@@ -2,7 +2,7 @@
 // Vercel serverless function — syncs a new order to Notion Client + Card Orders databases
 // Requires NOTION_TOKEN environment variable set in Vercel project settings
 
-const { Client } = require("@notionhq/client");
+import { Client } from "@notionhq/client";
 
 const CLIENT_DB = "334bc09b-53ce-80a9-82ec-000b8cffc130";
 const CARD_DB   = "334bc09b-53ce-8026-a631-000b683d4ef9";
@@ -14,7 +14,7 @@ const SERVICE_PRICES = {
   "Crease":         70,
 };
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // Allow CORS for local dev
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");

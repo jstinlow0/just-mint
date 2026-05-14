@@ -2,7 +2,7 @@
 // Vercel serverless function — creates a full signed waiver page in the Signed Waivers database
 // Signature is stored as encoded chunks so it's recoverable even after app rebuilds
 
-const { Client } = require("@notionhq/client");
+import { Client } from "@notionhq/client";
 
 const WAIVER_DB = "4e2e71c7-c056-421c-a58a-66914158dc7c";
 
@@ -49,7 +49,7 @@ function code(text) {
   };
 }
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
