@@ -77,177 +77,41 @@ async function saveOrders(orders) {
   catch(e) { console.error('Storage error:',e); }
 }
 
-// ─── Notion API — exact patterns from working reference ───────────────────────
-// Haiku for fast data entry. Pass model="sonnet" only for complex multi-step reads.
-async function callNotion(prompt, maxTokens=2000, model="haiku") {
-  const modelId = model==="sonnet"
-    ? "claude-sonnet-4-20250514"
-    : "claude-haiku-4-5-20251001";
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({
-      model: modelId,
-      max_tokens: maxTokens,
-      mcp_servers:[{type:"url",url:"https://mcp.notion.com/mcp",name:"notion"}],
-      messages:[{role:"user",content:prompt}],
-    }),
-  });
-  const data = await res.json();
-  return data.content?.filter(b=>b.type==="text").map(b=>b.text).join("")||"";
-}
+// ─── Notion API — calls Vercel serverless functions ──────────────────────────
+// These routes hold the NOTION_TOKEN securely on the server side.
+// Set NOTION_TOKEN in your Vercel project → Settings → Environment Variables.
 
 async function syncOrderToNotion(order) {
-  const dt       = new Date(order.waiverSignedAt);
-  const dateOnly = dt.toISOString().split("T")[0];              // "2026-05-14"
-  const dateTime = dt.toISOString().slice(0,16);                // "2026-05-14T10:30"
-  const uniqueConditions = [...new Set(order.cards.map(c=>c.condition))];
-
-  const cardsText = order.cards.map((c,i)=>{
-    const price = SERVICES.find(s=>s.id===c.service)?.price||0;
-    const title = c.cardNumber
-      ? `${c.cardName} (${c.year}) #${c.cardNumber} · ${order.id}`
-      : `${c.cardName} (${c.year}) · ${order.id}`;
-    return `Card ${i+1}: pageName="${title}" condition="${c.condition}" service="${c.service}" price=${price}`;
-  }).join("\n");
-
-  const text = await callNotion(
-`Notion data entry. Complete ALL steps in order.
-
-STEP 1 — Create ONE Client page in collection://${CLIENT_DB}:
-  Name: "${order.clientName}"
-  Contact Info: "${order.clientEmail} / ${order.clientPhone}"
-  Contact Method: "${order.contactMethod}"
-  Preferred Payment: "${order.paymentType}"
-  Service Requested (multi_select, values must be exactly from ["NM","LP","MP","HP","DMG"]): ${JSON.stringify(uniqueConditions)}
-  date:Date Intake:start: "${dateOnly}"
-  date:Date Intake:is_datetime: 0
-  Risk Agreement: __YES__
-  Intake Complete: __YES__
-
-STEP 2 — Create ONE Card Orders page per card in collection://${CARD_DB}, each linked to the Step 1 client:
-  Name (page title): use pageName from each card
-  Order #: "${order.id}"
-  date:Date Received:start: "${dateTime}"
-  date:Date Received:is_datetime: 1
-  Order Status: "Pending"
-  Order Complete: __NO__
-  Payment Received: __YES__
-  Condition (Before): use card condition (must be one of DMG, NM, HP, MP, LP)
-  Service Type: use card service value exactly
-  Price Charged: use card price value
-
-Cards:
-${cardsText}
-
-Reply ONLY valid JSON, no markdown, no explanation:
-{"clientUrl":"<page url>","orderUrls":["<url1>","<url2>",...]}`,
-    2000
-  );
-
-  const m = text.match(/\{[\s\S]*\}/);
-  if (!m) throw new Error("No JSON in Notion response");
-  return JSON.parse(m[0]);
-}
-
-// Fire-and-forget status update on all card pages for a batch
-async function updateNotionStatus(order, newStatus) {
-  const urls = order.notionOrderUrls||[];
-  if (!urls.length) return;
-  const ids = urls.map(url=>{
-    const m=(url||"").replace(/-/g,"").match(/([a-f0-9]{32})/i);
-    return m?m[1]:null;
-  }).filter(Boolean);
-  if (!ids.length) return;
-
-  const notionStatus  = {pending:"Pending",in_progress:"In Progress",complete:"Complete",picked_up:"Picked Up"}[newStatus]||"Pending";
-  const isComplete    = newStatus==="complete"||newStatus==="picked_up";
-  const dateCompleted = isComplete?new Date().toISOString().slice(0,16):null;
-
-  callNotion(
-`Update the following Notion pages. For EACH page ID call update_properties and set:
-  Order Status: "${notionStatus}"
-  Order Complete: ${isComplete?"__YES__":"__NO__"}
-  ${dateCompleted?`date:Date Completed:start: "${dateCompleted}"\n  date:Date Completed:is_datetime: 1`:""}
-
-Page IDs (update ALL):
-${ids.join("\n")}
-
-Reply only: {"ok":true}`,
-    500
-  ).catch(()=>{});
-}
-
-// ─── Waiver Document Builder ──────────────────────────────────────────────────
-function buildWaiverContent(order) {
-  const total   = batchTotal(order.cards);
-  const dateStr = new Date(order.waiverSignedAt).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  const services = [...new Set(order.cards.map(c=>c.service))].join(', ');
-  let md = '';
-  md += '## Client Information\n\n| Field | Details |\n|---|---|\n';
-  md += `| Client Name | ${order.clientName} |\n`;
-  md += `| Order # | ${order.id} |\n`;
-  md += `| Email | ${order.clientEmail} |\n`;
-  md += `| Phone | ${order.clientPhone} |\n`;
-  md += `| Contact Method | ${order.contactMethod} |\n`;
-  md += `| Payment | ${order.paymentType} |\n`;
-  md += `| Services | ${services} |\n`;
-  md += `| Batch Total | $${total} |\n`;
-  md += `| Date Signed | ${dateStr} |\n\n---\n\n`;
-  md += `## Cards in This Batch (${order.cards.length})\n\n`;
-  order.cards.forEach((card,i)=>{
-    const svc=SERVICES.find(s=>s.id===card.service);
-    md += `${i+1}. **${card.cardName} (${card.year})**`;
-    if (card.cardNumber) md += ` — #${card.cardNumber}`;
-    md += ` — Condition: ${card.condition} — ${svc?.label} — $${svc?.price}\n`;
+  const res = await fetch("/api/sync-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(order),
   });
-  md += `\n**Batch Total: $${total}**\n\n---\n\n`;
-  md += '## Service Agreement — Full Terms\n\n';
-  WAIVER_SECTIONS.forEach(s=>{ md += `### ${s.t}\n\n${s.b}\n\n`; });
-  md += '---\n\n## Electronic Signature\n\n';
-  md += `✅ **Electronically signed on ${dateStr}.**\n\n`;
-  md += 'By signing, the client confirms they have read, understood, and agreed to all terms above.\n\n---\n\n';
-  md += '## Signature Image Data\n\n';
-  md += '> ⚠️ Encoded signature for recovery — do not edit manually.\n\n';
-  if (order.signatureDataUrl && order.signatureDataUrl !== '[CAPTURED]') {
-    const CHUNK=1800, sig=order.signatureDataUrl;
-    for (let i=0;i<sig.length;i+=CHUNK) {
-      const n=Math.floor(i/CHUNK)+1;
-      md += `[SIG_${n}]${sig.slice(i,i+CHUNK)}[/SIG_${n}]\n\n`;
-    }
-  } else { md += 'No signature image data captured.\n\n'; }
-  return md;
+  if (!res.ok) throw new Error(`sync-order failed: ${res.status}`);
+  return res.json(); // { success, clientUrl, orderUrls }
 }
 
 async function createWaiverPage(order) {
-  const dateStr  = new Date(order.waiverSignedAt).toISOString().split('T')[0];
-  const total    = batchTotal(order.cards);
-  const services = [...new Set(order.cards.map(c=>c.service))].join(', ');
-  const content  = buildWaiverContent(order);
-  const text = await callNotion(
-`Create a Notion page in collection://${WAIVER_DB} with these exact property values:
-
-  Waiver (title): "Signed Waiver — ${order.id} | ${order.clientName}"
-  Client Name: "${order.clientName}"
-  Order #: "${order.id}"
-  Service: "${services}"
-  Price: ${total}
-  Cards in Batch: ${order.cards.length}
-  date:Date Signed:start: "${dateStr}"
-  date:Date Signed:is_datetime: 0
-  Signature Status: "Signed"
-
-Page content — copy this Markdown exactly as written. Do NOT interpret, reformat, or alter any [SIG_N]...[/SIG_N] markers — preserve them as literal plain text:
-${content}
-
-When done respond with ONLY valid JSON (no markdown, no extra text):
-{"waiverUrl":"<page url>"}`,
-    4000
-  );
-  const m=text.match(/\{"waiverUrl"[\s\S]*?\}/);
-  if (!m) throw new Error('No waiverUrl in response');
-  return JSON.parse(m[0]);
+  const res = await fetch("/api/create-waiver", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(order),
+  });
+  if (!res.ok) throw new Error(`create-waiver failed: ${res.status}`);
+  return res.json(); // { success, waiverUrl }
 }
+
+// Update card order statuses when owner advances an order
+async function updateNotionStatus(order, newStatus) {
+  const urls = order.notionOrderUrls || [];
+  if (!urls.length) return;
+  fetch("/api/update-status", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orderUrls: urls, status: newStatus }),
+  }).catch(() => {});
+}
+
 
 // ─── Shared Styles ────────────────────────────────────────────────────────────
 const IS = (err) => ({
