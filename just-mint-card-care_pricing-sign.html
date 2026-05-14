@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Just Mint Card Care — Price Catalogue (A4)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Italiana&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ───────────────────────────────────────────────────────────────
+     MINT APOTHECARY — A4 PRICE CATALOGUE
+     for Just Mint Card Care
+     Print: open in Chrome → Cmd/Ctrl-P → Save as PDF (A4, no margins)
+     QR codes: place qr-venmo.png, qr-paypal.png, qr-instagram.png
+              in the same folder as this file. They will load
+              automatically. Otherwise an elegant placeholder shows.
+     ─────────────────────────────────────────────────────────────── */
+
+  :root{
+    --cream:        #F2EDE3;
+    --cream-deep:   #E9E1D2;
+    --mint-pale:    #CFE3D2;
+    --mint:         #8FB89A;
+    --mint-deep:    #5C8B6E;
+    --forest:       #1B3A2D;
+    --ink:          #14201B;
+    --bronze:       #A88556;
+    --hairline:     #1B3A2D;
+  }
+
+  @page{
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background: #b3aa9c;            /* dim the around-page when viewing in browser */
+    font-family: "Work Sans", system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* center the page when viewed in a browser */
+  body{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 24px 0;
+  }
+
+  .page{
+    width: 210mm;
+    height: 297mm;
+    background: var(--cream);
+    background-image:
+      radial-gradient(rgba(27,58,45,0.030) 0.4px, transparent 0.4px);
+    background-size: 1.8mm 1.8mm;
+    background-position: 0 0;
+    position: relative;
+    overflow: hidden;
+    color: var(--ink);
+    -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+    padding: 17mm 18mm 16mm 18mm;
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    row-gap: 7mm;
+  }
+
+  @media print{
+    html, body{ background: #fff; padding: 0; }
+    body{ display: block; }
+    .page{ box-shadow: none; margin: 0; }
+  }
+
+  /* ───── HEADER ───── */
+  header{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 8mm;
+    padding-bottom: 4mm;
+    border-bottom: 0.4mm solid var(--forest);
+  }
+
+  .wordmark{
+    font-family: "Italiana", "IBM Plex Serif", serif;
+    font-weight: 400;
+    color: var(--forest);
+    margin: 0;
+    line-height: 0.96;
+    letter-spacing: -0.5mm;
+    font-size: 22mm;       /* approx 62pt */
+  }
+  .wordmark .l1{ display:block; }
+  .wordmark .l2{ display:block; padding-left: 0; }
+
+  .seal{
+    width: 20mm; height: 20mm;
+    border: 0.3mm solid var(--forest);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--forest);
+    background: transparent;
+    position: relative;
+    margin-bottom: 1mm;
+  }
+  .seal::before{
+    content: "";
+    position: absolute;
+    inset: 1.2mm;
+    border: 0.15mm solid var(--forest);
+    border-radius: 50%;
+  }
+  .seal-mark{
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 6.5pt;
+    letter-spacing: 0.6mm;
+    color: var(--forest);
+  }
+
+  /* ───── HEADER META STRIP ───── */
+  .meta{
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 4mm;
+    color: var(--forest);
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    font-size: 7pt;
+    letter-spacing: 0.45mm;
+    text-transform: uppercase;
+    padding-top: 1mm;
+  }
+  .meta .rule{
+    height: 0.15mm;
+    background: var(--forest);
+    opacity: 0.9;
+  }
+
+  /* ───── SERVICES ───── */
+  .services{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 1mm;
+  }
+
+  .section-label{
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600;
+    font-size: 8.5pt;
+    letter-spacing: 0.7mm;
+    text-transform: uppercase;
+    color: var(--forest);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 4mm;
+    margin-bottom: 4mm;
+  }
+  .section-label .rule{
+    height: 0.18mm;
+    background: var(--forest);
+  }
+  .section-label .roman{
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 500;
+    font-size: 7.5pt;
+    letter-spacing: 0.4mm;
+    color: var(--mint-deep);
+  }
+
+  .service{
+    display: grid;
+    grid-template-columns: 9mm 1fr 25mm 18mm;
+    column-gap: 5mm;
+    align-items: baseline;
+    padding: 4mm 0 4mm 0;
+    border-top: 0.12mm solid rgba(27,58,45,0.35);
+  }
+  .service:first-of-type{ border-top: 0; padding-top: 2mm; }
+  .service:last-of-type{ border-bottom: 0.12mm solid rgba(27,58,45,0.35); }
+
+  .num{
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 500;
+    font-size: 9pt;
+    color: var(--mint-deep);
+    letter-spacing: 0.3mm;
+    align-self: start;
+    padding-top: 1.4mm;
+  }
+
+  .name{
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 600;
+    font-size: 13pt;
+    color: var(--forest);
+    letter-spacing: 0.3mm;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 1.6mm;
+  }
+  .name .dot{
+    color: var(--mint-deep);
+    margin: 0 1.2mm;
+    font-weight: 400;
+  }
+
+  .desc{
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 10.5pt;
+    color: var(--ink);
+    line-height: 1.32;
+    max-width: 96mm;
+  }
+
+  .turnaround{
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 400;
+    font-size: 8.5pt;
+    color: var(--forest);
+    text-align: right;
+    align-self: start;
+    padding-top: 2mm;
+    letter-spacing: 0.2mm;
+    white-space: nowrap;
+  }
+  .turnaround .label{
+    color: var(--mint-deep);
+    font-size: 6.5pt;
+    letter-spacing: 0.5mm;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.6mm;
+  }
+
+  .price{
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 19pt;
+    color: var(--forest);
+    text-align: right;
+    align-self: start;
+    line-height: 0.9;
+    padding-top: 1mm;
+    letter-spacing: -0.2mm;
+  }
+
+  .bulk{
+    margin-top: 4mm;
+    display: grid;
+    grid-template-columns: 9mm 1fr auto;
+    column-gap: 5mm;
+    align-items: baseline;
+    padding-top: 3mm;
+  }
+  .bulk .num{ color: var(--bronze); }
+  .bulk .name{
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 500;
+    font-size: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5mm;
+    color: var(--forest);
+    margin: 0;
+  }
+  .bulk .price{
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 13pt;
+    color: var(--bronze);
+  }
+  .bulk .desc{
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-size: 9.5pt;
+    color: var(--ink);
+    margin-top: 1mm;
+  }
+
+  /* ───── FOOTER GRID (Payment + Connect) ───── */
+  .footer-grid{
+    display: grid;
+    grid-template-columns: 1fr 0.15mm 1fr;
+    column-gap: 8mm;
+    padding-top: 5mm;
+    border-top: 0.4mm solid var(--forest);
+  }
+
+  .col-rule{
+    background: rgba(27,58,45,0.45);
+    width: 0.15mm;
+    height: 100%;
+  }
+
+  .col h3{
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600;
+    font-size: 8.5pt;
+    letter-spacing: 0.7mm;
+    text-transform: uppercase;
+    color: var(--forest);
+    margin: 0 0 4mm 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3mm;
+    align-items: center;
+  }
+  .col h3 .rule{
+    height: 0.15mm; background: var(--forest);
+  }
+
+  .qr-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 6mm;
+    margin-bottom: 4mm;
+  }
+  .qr-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2mm;
+  }
+  .qr-frame{
+    width: 32mm;
+    height: 32mm;
+    background: #fff;
+    border: 0.18mm solid var(--forest);
+    padding: 1.6mm;
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+  .qr-frame::before, .qr-frame::after{
+    content:"";
+    position: absolute;
+    width: 2.2mm; height: 2.2mm;
+    border: 0.18mm solid var(--mint-deep);
+  }
+  .qr-frame::before{ top: -1mm; left: -1mm; border-right: none; border-bottom: none;}
+  .qr-frame::after { bottom: -1mm; right: -1mm; border-left: none; border-top: none;}
+  .qr-frame .corner-tr, .qr-frame .corner-bl{
+    position: absolute;
+    width: 2.2mm; height: 2.2mm;
+    border: 0.18mm solid var(--mint-deep);
+  }
+  .qr-frame .corner-tr{ top: -1mm; right: -1mm; border-left: none; border-bottom: none;}
+  .qr-frame .corner-bl{ bottom: -1mm; left: -1mm; border-right: none; border-top: none;}
+
+  .qr-img{
+    width: 100%; height: 100%;
+    object-fit: contain;
+    background: #fff;
+    position: relative;
+    z-index: 2;
+  }
+  .qr-placeholder{
+    position: absolute;
+    inset: 1.6mm;
+    z-index: 1;
+  }
+
+  .qr-label{
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600;
+    font-size: 7pt;
+    letter-spacing: 0.5mm;
+    text-transform: uppercase;
+    color: var(--forest);
+  }
+  .qr-handle{
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 400;
+    font-size: 7.5pt;
+    color: var(--ink);
+    letter-spacing: 0.05mm;
+    margin-top: -1mm;
+  }
+
+  .col .body-line{
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-size: 10pt;
+    color: var(--forest);
+    margin-top: 2.5mm;
+    text-align: center;
+  }
+  .col .body-line.left{ text-align: left; }
+
+  .col .meta-line{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 7.5pt;
+    color: var(--ink);
+    letter-spacing: 0.1mm;
+    text-align: center;
+    margin-top: 1mm;
+  }
+
+  .single-qr{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3mm;
+  }
+  .single-qr .qr-block .qr-frame{
+    width: 36mm;
+    height: 36mm;
+  }
+
+  /* ───── FOOTER NOTES ───── */
+  .notes{
+    border-top: 0.18mm solid rgba(27,58,45,0.55);
+    padding-top: 4mm;
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 8mm;
+  }
+  .note{
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-size: 9.5pt;
+    color: var(--ink);
+    line-height: 1.3;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3mm;
+    align-items: baseline;
+  }
+  .note .tag{
+    font-family: "Work Sans", sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 6.8pt;
+    letter-spacing: 0.5mm;
+    text-transform: uppercase;
+    color: var(--mint-deep);
+    background: var(--mint-pale);
+    padding: 0.6mm 1.6mm;
+    border-radius: 0.6mm;
+    align-self: start;
+    margin-top: 0.3mm;
+  }
+
+  /* ───── BOTTOM RULE / SIGNATURE ───── */
+  .bottom-rule{
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 4mm;
+    padding-top: 4mm;
+    border-top: 0.4mm solid var(--forest);
+    color: var(--forest);
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    font-size: 6.8pt;
+    letter-spacing: 0.7mm;
+    text-transform: uppercase;
+  }
+  .bottom-rule .center-rule{
+    height: 0.15mm;
+    background: var(--forest);
+    opacity: 0.5;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ───── HEADER ───── -->
+  <header>
+    <div>
+      <h1 class="wordmark">
+        <span class="l1">Just&nbsp;Mint</span>
+        <span class="l2">Card&nbsp;Care</span>
+      </h1>
+    </div>
+    <div class="seal" aria-hidden="true">
+      <span class="seal-mark">JMCC</span>
+    </div>
+  </header>
+
+  <!-- ───── SERVICES ───── -->
+  <section class="services">
+    <div class="section-label">
+      <span>Card&nbsp;Care&nbsp;Services</span>
+      <span class="rule"></span>
+      <span class="roman">i · ii · iii · iv</span>
+    </div>
+
+    <div class="service">
+      <div class="num">I</div>
+      <div>
+        <div class="name">Clean<span class="dot">·</span>Polish</div>
+        <div class="desc">Surface clean and polish of holo to reduce micro-abrasions.</div>
+      </div>
+      <div class="turnaround"><span class="label">Turnaround</span>1&nbsp;week</div>
+      <div class="price">$8</div>
+    </div>
+
+    <div class="service">
+      <div class="num">II</div>
+      <div>
+        <div class="name">Dents</div>
+        <div class="desc">Controlled relaxation and re-bonding of surface layers. Clean&nbsp;+&nbsp;Polish included.</div>
+      </div>
+      <div class="turnaround"><span class="label">Turnaround</span>1&nbsp;week</div>
+      <div class="price">$50</div>
+    </div>
+
+    <div class="service">
+      <div class="num">III</div>
+      <div>
+        <div class="name">Corner<span class="dot">·</span>Edge&nbsp;Lifts</div>
+        <div class="desc">Controlled relaxation and re-bonding of surface layers. Clean&nbsp;+&nbsp;Polish included.</div>
+      </div>
+      <div class="turnaround"><span class="label">Turnaround</span>1–2&nbsp;weeks</div>
+      <div class="price">$30</div>
+    </div>
+
+    <div class="service">
+      <div class="num">IV</div>
+      <div>
+        <div class="name">Creases</div>
+        <div class="desc">Humidity- and pressure-based fiber relaxation. Clean&nbsp;+&nbsp;Polish included.</div>
+      </div>
+      <div class="turnaround"><span class="label">Turnaround</span>1.5–3&nbsp;weeks</div>
+      <div class="price">$70</div>
+    </div>
+
+    <div class="bulk">
+      <div class="num">—</div>
+      <div>
+        <div class="name">Bulk&nbsp;Submissions</div>
+        <div class="desc">A standing courtesy on larger consignments — please ask when scheduling.</div>
+      </div>
+      <div class="price">10%&nbsp;off</div>
+    </div>
+  </section>
+
+  <!-- ───── PAYMENT + CONNECT ───── -->
+  <section class="footer-grid">
+
+    <!-- PAYMENT -->
+    <div class="col">
+      <h3><span>Payment</span><span class="rule"></span></h3>
+      <div class="qr-row">
+
+        <div class="qr-block">
+          <div class="qr-frame">
+            <div class="corner-tr"></div><div class="corner-bl"></div>
+            <svg class="qr-placeholder" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="100" height="100" fill="#ffffff"/>
+              <!-- finder squares -->
+              <g fill="#1B3A2D">
+                <rect x="6"  y="6"  width="22" height="22"/>
+                <rect x="72" y="6"  width="22" height="22"/>
+                <rect x="6"  y="72" width="22" height="22"/>
+              </g>
+              <g fill="#ffffff">
+                <rect x="10" y="10" width="14" height="14"/>
+                <rect x="76" y="10" width="14" height="14"/>
+                <rect x="10" y="76" width="14" height="14"/>
+              </g>
+              <g fill="#1B3A2D">
+                <rect x="14" y="14" width="6" height="6"/>
+                <rect x="80" y="14" width="6" height="6"/>
+                <rect x="14" y="80" width="6" height="6"/>
+              </g>
+              <!-- subtle data field hint -->
+              <g fill="#1B3A2D" opacity="0.18">
+                <rect x="34" y="6"  width="3" height="3"/>
+                <rect x="40" y="6"  width="3" height="3"/>
+                <rect x="50" y="6"  width="3" height="3"/>
+                <rect x="60" y="6"  width="3" height="3"/>
+                <rect x="34" y="34" width="3" height="3"/>
+                <rect x="44" y="34" width="3" height="3"/>
+                <rect x="54" y="34" width="3" height="3"/>
+                <rect x="64" y="34" width="3" height="3"/>
+                <rect x="74" y="34" width="3" height="3"/>
+                <rect x="84" y="34" width="3" height="3"/>
+                <rect x="6"  y="44" width="3" height="3"/>
+                <rect x="44" y="44" width="3" height="3"/>
+                <rect x="64" y="44" width="3" height="3"/>
+                <rect x="84" y="44" width="3" height="3"/>
+                <rect x="34" y="54" width="3" height="3"/>
+                <rect x="54" y="54" width="3" height="3"/>
+                <rect x="74" y="54" width="3" height="3"/>
+                <rect x="34" y="64" width="3" height="3"/>
+                <rect x="44" y="64" width="3" height="3"/>
+                <rect x="64" y="64" width="3" height="3"/>
+                <rect x="84" y="64" width="3" height="3"/>
+                <rect x="44" y="74" width="3" height="3"/>
+                <rect x="64" y="74" width="3" height="3"/>
+                <rect x="74" y="84" width="3" height="3"/>
+                <rect x="84" y="84" width="3" height="3"/>
+              </g>
+              <text x="50" y="56" text-anchor="middle"
+                    font-family="Italiana, serif" font-size="9"
+                    fill="#1B3A2D" opacity="0.45">venmo</text>
+            </svg>
+            <img class="qr-img" src="qr-venmo.png"
+                 onerror="this.style.display='none'" alt="Venmo QR">
+          </div>
+          <div class="qr-label">Venmo</div>
+          <div class="qr-handle">@Justin-Lo-18</div>
+        </div>
+
+        <div class="qr-block">
+          <div class="qr-frame">
+            <div class="corner-tr"></div><div class="corner-bl"></div>
+            <svg class="qr-placeholder" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="100" height="100" fill="#ffffff"/>
+              <g fill="#1B3A2D">
+                <rect x="6"  y="6"  width="22" height="22"/>
+                <rect x="72" y="6"  width="22" height="22"/>
+                <rect x="6"  y="72" width="22" height="22"/>
+              </g>
+              <g fill="#ffffff">
+                <rect x="10" y="10" width="14" height="14"/>
+                <rect x="76" y="10" width="14" height="14"/>
+                <rect x="10" y="76" width="14" height="14"/>
+              </g>
+              <g fill="#1B3A2D">
+                <rect x="14" y="14" width="6" height="6"/>
+                <rect x="80" y="14" width="6" height="6"/>
+                <rect x="14" y="80" width="6" height="6"/>
+              </g>
+              <g fill="#1B3A2D" opacity="0.18">
+                <rect x="34" y="10" width="3" height="3"/>
+                <rect x="44" y="10" width="3" height="3"/>
+                <rect x="54" y="10" width="3" height="3"/>
+                <rect x="64" y="14" width="3" height="3"/>
+                <rect x="34" y="44" width="3" height="3"/>
+                <rect x="44" y="44" width="3" height="3"/>
+                <rect x="54" y="44" width="3" height="3"/>
+                <rect x="64" y="44" width="3" height="3"/>
+                <rect x="74" y="44" width="3" height="3"/>
+                <rect x="34" y="64" width="3" height="3"/>
+                <rect x="54" y="64" width="3" height="3"/>
+                <rect x="74" y="64" width="3" height="3"/>
+                <rect x="6"  y="34" width="3" height="3"/>
+                <rect x="14" y="44" width="3" height="3"/>
+                <rect x="6"  y="64" width="3" height="3"/>
+                <rect x="44" y="84" width="3" height="3"/>
+                <rect x="64" y="84" width="3" height="3"/>
+                <rect x="74" y="74" width="3" height="3"/>
+                <rect x="84" y="44" width="3" height="3"/>
+                <rect x="84" y="74" width="3" height="3"/>
+              </g>
+              <text x="50" y="56" text-anchor="middle"
+                    font-family="Italiana, serif" font-size="9"
+                    fill="#1B3A2D" opacity="0.45">paypal</text>
+            </svg>
+            <img class="qr-img" src="qr-paypal.png"
+                 onerror="this.style.display='none'" alt="PayPal QR">
+          </div>
+          <div class="qr-label">PayPal</div>
+          <div class="qr-handle">Justin&nbsp;Lo</div>
+        </div>
+
+      </div>
+
+      <div class="body-line">Cash also accepted.</div>
+
+    </div>
+
+    <div class="col-rule"></div>
+
+    <!-- CONNECT -->
+    <div class="col">
+      <h3><span>Connect</span><span class="rule"></span></h3>
+
+      <div class="single-qr">
+        <div class="qr-block">
+          <div class="qr-frame">
+            <div class="corner-tr"></div><div class="corner-bl"></div>
+            <svg class="qr-placeholder" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="100" height="100" fill="#ffffff"/>
+              <g fill="#1B3A2D">
+                <rect x="6"  y="6"  width="22" height="22"/>
+                <rect x="72" y="6"  width="22" height="22"/>
+                <rect x="6"  y="72" width="22" height="22"/>
+              </g>
+              <g fill="#ffffff">
+                <rect x="10" y="10" width="14" height="14"/>
+                <rect x="76" y="10" width="14" height="14"/>
+                <rect x="10" y="76" width="14" height="14"/>
+              </g>
+              <g fill="#1B3A2D">
+                <rect x="14" y="14" width="6" height="6"/>
+                <rect x="80" y="14" width="6" height="6"/>
+                <rect x="14" y="80" width="6" height="6"/>
+              </g>
+              <g fill="#1B3A2D" opacity="0.18">
+                <rect x="34" y="6"  width="3" height="3"/>
+                <rect x="44" y="6"  width="3" height="3"/>
+                <rect x="54" y="6"  width="3" height="3"/>
+                <rect x="64" y="6"  width="3" height="3"/>
+                <rect x="34" y="14" width="3" height="3"/>
+                <rect x="44" y="14" width="3" height="3"/>
+                <rect x="34" y="34" width="3" height="3"/>
+                <rect x="44" y="34" width="3" height="3"/>
+                <rect x="54" y="34" width="3" height="3"/>
+                <rect x="64" y="34" width="3" height="3"/>
+                <rect x="74" y="34" width="3" height="3"/>
+                <rect x="84" y="34" width="3" height="3"/>
+                <rect x="6"  y="44" width="3" height="3"/>
+                <rect x="14" y="44" width="3" height="3"/>
+                <rect x="34" y="44" width="3" height="3"/>
+                <rect x="54" y="44" width="3" height="3"/>
+                <rect x="74" y="44" width="3" height="3"/>
+                <rect x="84" y="44" width="3" height="3"/>
+                <rect x="34" y="54" width="3" height="3"/>
+                <rect x="44" y="54" width="3" height="3"/>
+                <rect x="64" y="54" width="3" height="3"/>
+                <rect x="84" y="54" width="3" height="3"/>
+                <rect x="44" y="64" width="3" height="3"/>
+                <rect x="54" y="64" width="3" height="3"/>
+                <rect x="74" y="64" width="3" height="3"/>
+                <rect x="34" y="74" width="3" height="3"/>
+                <rect x="44" y="74" width="3" height="3"/>
+                <rect x="54" y="74" width="3" height="3"/>
+                <rect x="74" y="74" width="3" height="3"/>
+                <rect x="84" y="74" width="3" height="3"/>
+                <rect x="44" y="84" width="3" height="3"/>
+                <rect x="54" y="84" width="3" height="3"/>
+                <rect x="64" y="84" width="3" height="3"/>
+                <rect x="74" y="84" width="3" height="3"/>
+                <rect x="84" y="84" width="3" height="3"/>
+              </g>
+              <text x="50" y="56" text-anchor="middle"
+                    font-family="Italiana, serif" font-size="8"
+                    fill="#1B3A2D" opacity="0.45">instagram</text>
+            </svg>
+            <img class="qr-img" src="qr-instagram.png"
+                 onerror="this.style.display='none'" alt="Instagram QR">
+          </div>
+          <div class="qr-label">Instagram</div>
+          <div class="qr-handle">@justmintcardcare</div>
+        </div>
+      </div>
+
+      <div class="meta-line">justminttcg@gmail.com</div>
+      <div class="body-line">DM&nbsp;to&nbsp;schedule&nbsp;&nbsp;·&nbsp;&nbsp;Local&nbsp;drop-off</div>
+
+    </div>
+  </section>
+
+  <!-- ───── NOTES ───── -->
+  <section class="notes">
+    <div class="note">
+      <span class="tag">Note</span>
+      <span>Whitening <em>cannot</em> be fixed.</span>
+    </div>
+    <div class="note">
+      <span class="tag">Note</span>
+      <span>Ask about bundle deals for cleaning.</span>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>
